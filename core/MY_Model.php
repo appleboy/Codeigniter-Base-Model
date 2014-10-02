@@ -9,7 +9,7 @@
  * @update (c) 2014 Bo-Yi Wu <http://blog.wu-boy.com>
  */
 
-class BaseModel extends CI_Model
+class MY_Model extends CI_Model
 {
 
     /* --------------------------------------------------------------
