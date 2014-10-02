@@ -244,6 +244,52 @@ class MY_Model extends CI_Model
     }
 
     /**
+     * Increase count.
+     */
+    public function increase($primary_value, $data)
+    {
+        $primary_value = (int) $primary_value;
+        $data = (array) $data;
+
+        if (empty($primary_value) or empty($data)) {
+            return false;
+        }
+
+        foreach ($data as $row) {
+            $this->_database->set($row, $row . ' + 1', false);
+        }
+
+        $result = $this->_database
+            ->where($this->primary_key, $primary_value)
+            ->update($this->_table);
+
+        return $result;
+    }
+
+    /**
+     * Decrease count.
+     */
+    public function decrease($primary_value, $data)
+    {
+        $primary_value = (int) $primary_value;
+        $data = (array) $data;
+
+        if (empty($primary_value) or empty($data)) {
+            return false;
+        }
+
+        foreach ($data as $row) {
+            $this->_database->set($row, $row . ' - 1', false);
+        }
+
+        $result = $this->_database
+            ->where($this->primary_key, $primary_value)
+            ->update($this->_table);
+
+        return $result;
+    }
+
+    /**
      * Updated a record based on the primary value.
      */
     public function update($primary_value, $data, $skip_validation = FALSE)
