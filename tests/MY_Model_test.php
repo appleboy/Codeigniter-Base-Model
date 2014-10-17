@@ -173,7 +173,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
     public function test_insert()
     {
         $this->model->_database->expects($this->once())
-                        ->method('create')
+                        ->method('insert')
                         ->with($this->equalTo('records'), $this->equalTo(array('new' => 'data')));
         $this->model->_database->expects($this->any())
                         ->method('insert_id')
@@ -185,7 +185,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
     public function test_insert_many()
     {
         $this->model->_database->expects($this->exactly(2))
-                        ->method('create')
+                        ->method('insert')
                         ->with($this->equalTo('records'));
         $this->model->_database->expects($this->any())
                         ->method('insert_id')
@@ -317,7 +317,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $expected_row = array( 'one' => 'ONE', 'two' => 'TWO', 'key' => 'Value', 'another_key' => '123 Value' );
 
         $this->model->_database->expects($this->once())
-                        ->method('create')
+                        ->method('insert')
                         ->with($this->equalTo('records'), $this->equalTo($expected_row));
 
         $this->model->create($row);
@@ -772,7 +772,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $data = array( 'name' => 'Jamie', 'awesomeness_level' => 1000000 );
 
         $this->model->_database->expects($this->exactly(1))
-                        ->method('create')
+                        ->method('insert')
                         ->with($this->equalTo('records'), $this->equalTo(array( 'data' => serialize($data) )));
 
         $this->model->create(array( 'data' => $data ));
