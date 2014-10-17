@@ -206,7 +206,7 @@ class MY_Model extends CI_Model
      * Insert a new row into the table. $data should be an associative array
      * of data to be inserted. Returns newly created ID.
      */
-    public function insert($data, $skip_validation = false)
+    public function create($data, $skip_validation = false)
     {
         if ($skip_validation === FALSE) {
             $data = $this->validate($data);
@@ -234,7 +234,7 @@ class MY_Model extends CI_Model
         $ids = array();
 
         foreach ($data as $key => $row) {
-            $ids[] = $this->insert($row, $skip_validation, ($key == count($data) - 1));
+            $ids[] = $this->create($row, $skip_validation, ($key == count($data) - 1));
         }
 
         return $ids;
