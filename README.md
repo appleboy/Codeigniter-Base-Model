@@ -21,7 +21,7 @@ $this->post->get(1);
 $this->post->get_by('title', 'Pigs CAN Fly!');
 $this->post->get_many_by('status', 'open');
 
-$this->post->insert(array(
+$this->post->create(array(
     'status' => 'open',
     'title' => "I'm too sexy for my shirt"
 ));
@@ -136,16 +136,16 @@ You can enable validation by setting the `$validate` instance to the usual form 
 
 Anything valid in the form validation library can be used here. To find out more about the rules array, please [view the library's documentation](http://codeigniter.com/user_guide/libraries/form_validation.html#validationrulesasarray).
 
-With this array set, each call to `insert()` or `update()` will validate the data before allowing  the query to be run. **Unlike the CodeIgniter validation library, this won't validate the POST data, rather, it validates the data passed directly through.**
+With this array set, each call to `create()` or `update()` will validate the data before allowing  the query to be run. **Unlike the CodeIgniter validation library, this won't validate the POST data, rather, it validates the data passed directly through.**
 
 You can skip the validation with `skip_validation()`:
 
     $this->user_model->skip_validation();
-    $this->user_model->insert(array( 'email' => 'blah' ));
+    $this->user_model->create(array( 'email' => 'blah' ));
 
-Alternatively, pass through a `TRUE` to `insert()`:
+Alternatively, pass through a `TRUE` to `create()`:
 
-    $this->user_model->insert(array( 'email' => 'blah' ), TRUE);
+    $this->user_model->create(array( 'email' => 'blah' ), TRUE);
 
 Under the hood, this calls `validate()`.
 
@@ -163,9 +163,9 @@ You can set protected attributes with the `$protected_attributes` array:
         public $protected_attributes = array( 'id', 'hash' );
     }
 
-Now, when `insert` or `update` is called, the attributes will automatically be removed from the array, and, thus, protected:
+Now, when `create` or `update` is called, the attributes will automatically be removed from the array, and, thus, protected:
 
-    $this->post_model->insert(array(
+    $this->post_model->create(array(
         'id' => 2,
         'hash' => 'aqe3fwrga23fw243fWE',
         'title' => 'A new post'
