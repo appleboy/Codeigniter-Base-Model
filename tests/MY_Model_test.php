@@ -173,19 +173,19 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
     public function test_insert()
     {
         $this->model->_database->expects($this->once())
-                        ->method('insert')
+                        ->method('create')
                         ->with($this->equalTo('records'), $this->equalTo(array('new' => 'data')));
         $this->model->_database->expects($this->any())
                         ->method('insert_id')
                         ->will($this->returnValue(123));
 
-        $this->assertEquals($this->model->insert(array('new' => 'data')), 123);
+        $this->assertEquals($this->model->create(array('new' => 'data')), 123);
     }
 
     public function test_insert_many()
     {
         $this->model->_database->expects($this->exactly(2))
-                        ->method('insert')
+                        ->method('create')
                         ->with($this->equalTo('records'));
         $this->model->_database->expects($this->any())
                         ->method('insert_id')
@@ -317,10 +317,10 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $expected_row = array( 'one' => 'ONE', 'two' => 'TWO', 'key' => 'Value', 'another_key' => '123 Value' );
 
         $this->model->_database->expects($this->once())
-                        ->method('insert')
+                        ->method('create')
                         ->with($this->equalTo('records'), $this->equalTo($expected_row));
 
-        $this->model->insert($row);
+        $this->model->create($row);
     }
 
     public function test_after_create_callbacks()
@@ -336,7 +336,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
         $this->assertCallbackIsCalled(function() use ($self)
         {
-            $self->model->insert(array( 'row' => 'here' ));
+            $self->model->create(array( 'row' => 'here' ));
         }, 10);
     }
 
@@ -772,10 +772,10 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $data = array( 'name' => 'Jamie', 'awesomeness_level' => 1000000 );
 
         $this->model->_database->expects($this->exactly(1))
-                        ->method('insert')
+                        ->method('create')
                         ->with($this->equalTo('records'), $this->equalTo(array( 'data' => serialize($data) )));
 
-        $this->model->insert(array( 'data' => $data ));
+        $this->model->create(array( 'data' => $data ));
     }
 
     public function test_timestamps()
