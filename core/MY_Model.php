@@ -6,7 +6,7 @@
  *
  * @link http://github.com/jamierumbelow/codeigniter-base-model
  * @copyright Copyright (c) 2012, Jamie Rumbelow <http://jamierumbelow.net>
- * @update (c) 2014 Bo-Yi Wu <http://blog.wu-boy.com>
+ * @copyright Copyright (c) 2014, Maintainer Bo-Yi Wu <http://blog.wu-boy.com>
  */
 
 class MY_Model extends CI_Model
@@ -90,6 +90,8 @@ class MY_Model extends CI_Model
      */
     protected $return_type = 'object';
     protected $_temporary_return_type = null;
+
+    protected $fillable = array();
 
     /* --------------------------------------------------------------
      * GENERIC METHODS
@@ -203,11 +205,28 @@ class MY_Model extends CI_Model
     }
 
     /**
+     * Get the fillable attributes of a given array.
+     *
+     * @param  array $attributes
+     * @return array
+     */
+    protected function fillableFromArray(array $attributes)
+    {
+        if (count($this->fillable) > 0) {
+            return array_intersect_key($attributes, array_flip($this->fillable));
+        }
+
+        return $attributes;
+    }
+
+    /**
      * Insert a new row into the table. $data should be an associative array
      * of data to be inserted. Returns newly created ID.
      */
     public function create($data, $skip_validation = false)
     {
+        $data = $this->fillableFromArray($data);
+
         if ($skip_validation === FALSE) {
             $data = $this->validate($data);
         }
@@ -292,6 +311,8 @@ class MY_Model extends CI_Model
     public function update($primary_value, $data, $skip_validation = false)
     {
         $data = $this->trigger('before_update', $data);
+
+        $data = $this->fillableFromArray($data);
 
         if ($skip_validation === FALSE) {
             $data = $this->validate($data);
