@@ -205,6 +205,29 @@ class MY_Model extends CI_Model
     }
 
     /**
+     * Set the fillable attributes for the model.
+     *
+     * @param  array $fillable
+     * @return this
+     */
+    public function fillable(array $fillable)
+    {
+        $this->fillable = $fillable;
+
+        return $this;
+    }
+
+    /**
+     * Get the fillable attributes for the model.
+     *
+     * @return array
+     */
+    public function getFillable()
+    {
+        return $this->fillable;
+    }
+
+    /**
      * Get the fillable attributes of a given array.
      *
      * @param  array $attributes
