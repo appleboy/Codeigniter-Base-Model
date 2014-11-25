@@ -274,8 +274,6 @@ class MY_Model extends CI_Model
      */
     public function create($data, $skip_validation = false)
     {
-        $data = $this->fillableFromArray($data);
-
         if ($skip_validation === FALSE) {
             $data = $this->validate($data);
         }
@@ -288,6 +286,7 @@ class MY_Model extends CI_Model
             }
 
             $data = $this->trigger('before_create', $data);
+            $data = $this->fillableFromArray($data);
 
             $this->_database->insert($this->_table, $data);
             $insert_id = $this->_database->insert_id();
@@ -365,20 +364,20 @@ class MY_Model extends CI_Model
      */
     public function update($primary_value, $data, $skip_validation = false)
     {
-        if ($this->timestamps) {
-            $this->before_update = array_unique(array_merge($this->before_update,
-                                    array('updated_at')));
-        }
-
-        $data = $this->trigger('before_update', $data);
-
-        $data = $this->fillableFromArray($data);
-
         if ($skip_validation === FALSE) {
             $data = $this->validate($data);
         }
 
         if ($data !== FALSE) {
+
+            if ($this->timestamps) {
+                $this->before_update = array_unique(array_merge($this->before_update,
+                                        array('updated_at')));
+            }
+
+            $data = $this->trigger('before_update', $data);
+            $data = $this->fillableFromArray($data);
+
             $result = $this->_database->where($this->primary_key, $primary_value)
                                ->set($data)
                                ->update($this->_table);
