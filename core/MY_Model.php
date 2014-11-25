@@ -430,7 +430,7 @@ class MY_Model extends CI_Model
 
         if ($this->timestamps) {
             $this->before_update = array_unique(array_merge($this->before_update,
-                                    ['updated_at']));
+                                    array('updated_at')));
         }
 
         $data = $this->trigger('before_update', $data);
@@ -454,7 +454,7 @@ class MY_Model extends CI_Model
     {
         if ($this->timestamps) {
             $this->before_update = array_unique(array_merge($this->before_update,
-                                    ['updated_at']));
+                                    array('updated_at')));
         }
 
         $data = $this->trigger('before_update', $data);
