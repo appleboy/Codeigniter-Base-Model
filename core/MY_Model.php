@@ -428,6 +428,11 @@ class MY_Model extends CI_Model
         $args = func_get_args();
         $data = array_pop($args);
 
+        if ($this->timestamps) {
+            $this->before_update = array_unique(array_merge($this->before_update,
+                                    ['updated_at']));
+        }
+
         $data = $this->trigger('before_update', $data);
 
         if ($this->validate($data) !== FALSE) {
@@ -447,6 +452,11 @@ class MY_Model extends CI_Model
      */
     public function update_all($data)
     {
+        if ($this->timestamps) {
+            $this->before_update = array_unique(array_merge($this->before_update,
+                                    ['updated_at']));
+        }
+
         $data = $this->trigger('before_update', $data);
         $result = $this->_database->set($data)
                            ->update($this->_table);
