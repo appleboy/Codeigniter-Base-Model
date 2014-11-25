@@ -91,7 +91,33 @@ class MY_Model extends CI_Model
     protected $return_type = 'object';
     protected $_temporary_return_type = null;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = array();
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = true;
+
+    /**
+     * The name of the "created at" column.
+     *
+     * @var string
+     */
+    const CREATED_AT = 'created_at';
+
+    /**
+     * The name of the "updated at" column.
+     *
+     * @var string
+     */
+    const UPDATED_AT = 'updated_at';
 
     /* --------------------------------------------------------------
      * GENERIC METHODS
@@ -255,6 +281,12 @@ class MY_Model extends CI_Model
         }
 
         if ($data !== FALSE) {
+
+            if ($this->timestamps) {
+                $this->before_create = array_unique(array_merge($this->before_create,
+                                        array('created_at', 'updated_at')));
+            }
+
             $data = $this->trigger('before_create', $data);
 
             $this->_database->insert($this->_table, $data);
@@ -333,6 +365,11 @@ class MY_Model extends CI_Model
      */
     public function update($primary_value, $data, $skip_validation = false)
     {
+        if ($this->timestamps) {
+            $this->before_update = array_unique(array_merge($this->before_update,
+                                    array('updated_at')));
+        }
+
         $data = $this->trigger('before_update', $data);
 
         $data = $this->fillableFromArray($data);
@@ -359,6 +396,11 @@ class MY_Model extends CI_Model
      */
     public function update_many($primary_values, $data, $skip_validation = false)
     {
+        if ($this->timestamps) {
+            $this->before_update = array_unique(array_merge($this->before_update,
+                                    array('updated_at')));
+        }
+
         $data = $this->trigger('before_update', $data);
 
         if ($skip_validation === FALSE) {
@@ -386,6 +428,11 @@ class MY_Model extends CI_Model
         $args = func_get_args();
         $data = array_pop($args);
 
+        if ($this->timestamps) {
+            $this->before_update = array_unique(array_merge($this->before_update,
+                                    array('updated_at')));
+        }
+
         $data = $this->trigger('before_update', $data);
 
         if ($this->validate($data) !== FALSE) {
@@ -405,6 +452,11 @@ class MY_Model extends CI_Model
      */
     public function update_all($data)
     {
+        if ($this->timestamps) {
+            $this->before_update = array_unique(array_merge($this->before_update,
+                                    array('updated_at')));
+        }
+
         $data = $this->trigger('before_update', $data);
         $result = $this->_database->set($data)
                            ->update($this->_table);
@@ -701,14 +753,26 @@ class MY_Model extends CI_Model
      * ------------------------------------------------------------ */
 
     /**
+     * Get a fresh timestamp for the model.
+     *
+     * @return date
+     */
+    public function freshTimestamp()
+    {
+        return date('Y-m-d H:i:s');
+    }
+
+    /**
      * MySQL DATETIME created_at and updated_at
      */
     public function created_at($row)
     {
+        $time = $this->freshTimestamp();
+
         if (is_object($row)) {
-            $row->created_at = date('Y-m-d H:i:s');
+            $row->{static::CREATED_AT} = $time;
         } else {
-            $row['created_at'] = date('Y-m-d H:i:s');
+            $row[static::CREATED_AT] = $time;
         }
 
         return $row;
@@ -716,10 +780,12 @@ class MY_Model extends CI_Model
 
     public function updated_at($row)
     {
+        $time = $this->freshTimestamp();
+
         if (is_object($row)) {
-            $row->updated_at = date('Y-m-d H:i:s');
+            $row->{static::UPDATED_AT} = $time;
         } else {
-            $row['updated_at'] = date('Y-m-d H:i:s');
+            $row[static::UPDATED_AT] = $time;
         }
 
         return $row;
@@ -858,6 +924,36 @@ class MY_Model extends CI_Model
         } else {
             return $data;
         }
+    }
+
+    /**
+     * Determine if the model uses timestamps.
+     *
+     * @return bool
+     */
+    public function usesTimestamps()
+    {
+        return $this->timestamps;
+    }
+
+    /**
+     * Get the name of the "created at" column.
+     *
+     * @return string
+     */
+    public function getCreatedAtColumn()
+    {
+        return static::CREATED_AT;
+    }
+
+    /**
+     * Get the name of the "updated at" column.
+     *
+     * @return string
+     */
+    public function getUpdatedAtColumn()
+    {
+        return static::UPDATED_AT;
     }
 
     /**
