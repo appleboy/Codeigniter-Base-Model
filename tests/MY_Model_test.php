@@ -317,6 +317,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
     public function test_before_create_callbacks()
     {
         $this->model = new Before_callback_model();
+        $this->model->timestamps = false;
         $this->model->_database = $this->getMock('MY_Model_Mock_DB');
 
         $row = array( 'one' => 'ONE', 'two' => 'TWO' );
@@ -348,6 +349,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
     public function test_before_update_callbacks()
     {
         $this->model = new Before_callback_model();
+        $this->model->timestamps = false;
         $this->model->_database = $this->getMock('MY_Model_Mock_DB');
 
         $row = array( 'one' => 'ONE', 'two' => 'TWO' );
@@ -365,6 +367,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
     public function test_after_update_callbacks()
     {
         $this->model = new After_callback_model();
+        $this->model->timestamps = false;
         $this->model->_database = $this->getMock('MY_Model_Mock_DB');
 
         $this->model->_database->expects($this->once())->method('where')->will($this->returnValue($this->model->_database));
@@ -767,6 +770,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
     public function test_serialize()
     {
         $this->model = new Serialised_data_model();
+        $this->model->timestamps = false;
         $this->model->_database = $this->getMock('MY_Model_Mock_DB');
 
         $data = array( 'name' => 'Jamie', 'awesomeness_level' => 1000000 );
