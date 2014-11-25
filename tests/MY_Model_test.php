@@ -236,6 +236,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
     public function test_update_by()
     {
+        $this->model->timestamps = false;
         $this->model->_database->expects($this->once())
                         ->method('where')
                         ->with($this->equalTo('some_column'), $this->equalTo('some_value'))
@@ -254,6 +255,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
     public function test_update_all()
     {
+        $this->model->timestamps = false;
         $this->model->_database->expects($this->once())
                         ->method('set')
                         ->with($this->equalTo(array('new' => 'data')))
