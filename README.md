@@ -335,6 +335,8 @@ If you'd like to include only the columns that have been deleted, you can use th
 Timestamps
 -------------------
 
+Copy from [Laravel timestamps document](http://laravel.com/docs/4.2/eloquent#timestamps).
+
 By default, **MY_Model** will maintain the `created_at` and `updated_at` columns on your database table automatically. Simply add these timestamp columns to your table and **MY_Model** will take care of the rest. If you do not wish for **MY_Model** to maintain these columns, add the following property to your model:
 Disabling Auto Timestamps
 
