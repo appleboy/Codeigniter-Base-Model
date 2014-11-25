@@ -172,6 +172,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
     public function test_insert()
     {
+        $this->model->timestamps = false;
         $this->model->_database->expects($this->once())
                         ->method('insert')
                         ->with($this->equalTo('records'), $this->equalTo(array('new' => 'data')));
@@ -184,6 +185,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
     public function test_insert_many()
     {
+        $this->model->timestamps = false;
         $this->model->_database->expects($this->exactly(2))
                         ->method('insert')
                         ->with($this->equalTo('records'));
@@ -196,6 +198,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
     public function test_update()
     {
+        $this->model->timestamps = false;
         $this->model->_database->expects($this->once())
                         ->method('where')
                         ->with($this->equalTo('id'), $this->equalTo(2))
@@ -207,13 +210,14 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $this->model->_database->expects($this->once())
                         ->method('update')
                         ->with($this->equalTo('records'))
-                        ->will($this->returnValue(TRUE));
+                        ->will($this->returnValue(true));
 
-        $this->assertEquals($this->model->update(2, array('new' => 'data')), TRUE);
+        $this->assertEquals($this->model->update(2, array('new' => 'data')), true);
     }
 
     public function test_update_many()
     {
+        $this->model->timestamps = false;
         $this->model->_database->expects($this->once())
                         ->method('where_in')
                         ->with($this->equalTo('id'), $this->equalTo(array(1, 2, 3, 4, 5)))
@@ -225,9 +229,9 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $this->model->_database->expects($this->once())
                         ->method('update')
                         ->with($this->equalTo('records'))
-                        ->will($this->returnValue(TRUE));
+                        ->will($this->returnValue(true));
 
-        $this->assertEquals($this->model->update_many(array(1, 2, 3, 4, 5), array('new' => 'data')), TRUE);
+        $this->assertEquals($this->model->update_many(array(1, 2, 3, 4, 5), array('new' => 'data')), true);
     }
 
     public function test_update_by()
@@ -243,9 +247,9 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $this->model->_database->expects($this->once())
                         ->method('update')
                         ->with($this->equalTo('records'))
-                        ->will($this->returnValue(TRUE));
+                        ->will($this->returnValue(true));
 
-        $this->assertEquals($this->model->update_by('some_column', 'some_value', array('new' => 'data')), TRUE);
+        $this->assertEquals($this->model->update_by('some_column', 'some_value', array('new' => 'data')), true);
     }
 
     public function test_update_all()
@@ -257,9 +261,9 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $this->model->_database->expects($this->once())
                         ->method('update')
                         ->with($this->equalTo('records'))
-                        ->will($this->returnValue(TRUE));
+                        ->will($this->returnValue(true));
 
-        $this->assertEquals($this->model->update_all(array('new' => 'data')), TRUE);
+        $this->assertEquals($this->model->update_all(array('new' => 'data')), true);
     }
 
     public function test_delete()
@@ -271,9 +275,9 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $this->model->_database->expects($this->once())
                         ->method('delete')
                         ->with($this->equalTo('records'))
-                        ->will($this->returnValue(TRUE));
+                        ->will($this->returnValue(true));
 
-        $this->assertEquals($this->model->delete(2), TRUE);
+        $this->assertEquals($this->model->delete(2), true);
     }
 
     public function test_delete_by()
@@ -285,9 +289,9 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $this->model->_database->expects($this->once())
                         ->method('delete')
                         ->with($this->equalTo('records'))
-                        ->will($this->returnValue(TRUE));
+                        ->will($this->returnValue(true));
 
-        $this->assertEquals($this->model->delete_by('some_column', 'some_value'), TRUE);
+        $this->assertEquals($this->model->delete_by('some_column', 'some_value'), true);
     }
 
     public function test_delete_many()
@@ -299,14 +303,14 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $this->model->_database->expects($this->once())
                         ->method('delete')
                         ->with($this->equalTo('records'))
-                        ->will($this->returnValue(TRUE));
+                        ->will($this->returnValue(true));
 
-        $this->assertEquals($this->model->delete_many(array(1, 2, 3, 4, 5)), TRUE);
+        $this->assertEquals($this->model->delete_many(array(1, 2, 3, 4, 5)), true);
     }
 
     /* --------------------------------------------------------------
      * MORE CALLBACK TESTS
-     * ------------------------------------------------------------ */  
+     * ------------------------------------------------------------ */
 
     public function test_before_create_callbacks()
     {
@@ -334,8 +338,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
         $self =& $this;
 
-        $this->assertCallbackIsCalled(function() use ($self)
-        {
+        $this->assertCallbackIsCalled(function () use ($self) {
             $self->model->create(array( 'row' => 'here' ));
         }, 10);
     }
@@ -364,12 +367,11 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
         $this->model->_database->expects($this->once())->method('where')->will($this->returnValue($this->model->_database));
         $this->model->_database->expects($this->once())->method('set')->will($this->returnValue($this->model->_database));
-        $this->model->_database->expects($this->once())->method('update')->will($this->returnValue(TRUE));
+        $this->model->_database->expects($this->once())->method('update')->will($this->returnValue(true));
 
         $self =& $this;
 
-        $this->assertCallbackIsCalled(function() use ($self)
-        {
+        $this->assertCallbackIsCalled(function () use ($self) {
             $self->model->update(1, array( 'row' => 'here' ));
         }, array( array( 'row' => 'here' ), true ));
     }
@@ -381,10 +383,9 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
         $self =& $this;
 
-        $this->assertCallbackIsCalled(function() use ($self)
-        {
+        $this->assertCallbackIsCalled(function () use ($self) {
             $self->model->get(1);
-        }, NULL);
+        }, null);
     }
 
     public function test_after_get_callbacks()
@@ -406,11 +407,10 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
     {
         $this->model = new Before_callback_model();
         $this->model->_database = $this->getMock('MY_Model_Mock_DB');
-        
+
         $self =& $this;
 
-        $this->assertCallbackIsCalled(function() use ($self)
-        {
+        $this->assertCallbackIsCalled(function () use ($self) {
             $self->model->delete(12);
         }, 12);
     }
@@ -419,16 +419,15 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
     {
         $this->model = new After_callback_model();
         $this->model->_database = $this->getMock('MY_Model_Mock_DB');
-        
+
         $this->model->_database->expects($this->once())->method('where')->will($this->returnValue($this->model->_database));
-        $this->model->_database->expects($this->once())->method('delete')->will($this->returnValue(TRUE));
+        $this->model->_database->expects($this->once())->method('delete')->will($this->returnValue(true));
 
         $self =& $this;
 
-        $this->assertCallbackIsCalled(function() use ($self)
-        {
+        $this->assertCallbackIsCalled(function () use ($self) {
             $self->model->delete(9);
-        }, TRUE);
+        }, true);
     }
 
     public function test_callbacks_support_parameters()
@@ -440,8 +439,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
             'some_param', 'another_param'
         );
 
-        $this->assertCallbackIsCalled(function() use ($self)
-        {
+        $this->assertCallbackIsCalled(function () use ($self) {
             $self->model->some_method();
         }, $callback_parameters);
     }
@@ -458,18 +456,18 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
     /* --------------------------------------------------------------
      * PROTECTED ATTRIBUTES
-     * ------------------------------------------------------------ */ 
+     * ------------------------------------------------------------ */
 
     public function test_protected_attributes()
     {
         $this->model = new Protected_attributes_model();
-        
+
         $author = array(
             'id' => 123,
             'hash' => 'dlkadflsdasdsadsds',
             'title' => 'A new post'
         );
-        $author_obj = (object)$author;
+        $author_obj = (object) $author;
 
         $author = $this->model->protect_attributes($author);
         $author_obj = $this->model->protect_attributes($author_obj);
@@ -486,9 +484,9 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
     public function test_belongs_to()
     {
-        $object = (object)array( 'title' => 'A Post', 'created_at' => time(), 'author_id' => 43 );
-        $author_object = (object)array( 'id' => 43, 'name' => 'Jamie', 'age' => 20 );
-        $expected_object = (object)array( 'title' => 'A Post', 'created_at' => time(), 'author_id' => 43, 'author' => $author_object );
+        $object = (object) array( 'title' => 'A Post', 'created_at' => time(), 'author_id' => 43 );
+        $author_object = (object) array( 'id' => 43, 'name' => 'Jamie', 'age' => 20 );
+        $expected_object = (object) array( 'title' => 'A Post', 'created_at' => time(), 'author_id' => 43, 'author' => $author_object );
 
         $self =& $this;
 
@@ -509,7 +507,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $author_model->_database->expects($this->once())->method('row')->will($this->returnValue($author_object));
 
         $this->model->load->expects($this->once())->method('model')->with('author_model', 'author_model')
-                          ->will($this->returnCallback(function() use ($self, $author_model){
+                          ->will($this->returnCallback(function () use ($self, $author_model) {
                               $self->model->author_model = $author_model;
                           }));
 
@@ -518,12 +516,12 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
     public function test_has_many()
     {
-        $object = (object)array( 'id' => 1, 'title' => 'A Post', 'created_at' => time(), 'author_id' => 43 );
-        
-        $comment_object = (object)array( 'id' => 1, 'comment' => 'A comment' );
-        $comment_object_2 = (object)array( 'id' => 2, 'comment' => 'Another comment' );
+        $object = (object) array( 'id' => 1, 'title' => 'A Post', 'created_at' => time(), 'author_id' => 43 );
 
-        $expected_object = (object)array( 'id' => 1, 'title' => 'A Post', 'created_at' => time(), 'author_id' => 43,
+        $comment_object = (object) array( 'id' => 1, 'comment' => 'A comment' );
+        $comment_object_2 = (object) array( 'id' => 2, 'comment' => 'Another comment' );
+
+        $expected_object = (object) array( 'id' => 1, 'title' => 'A Post', 'created_at' => time(), 'author_id' => 43,
                                           'comments' => array( $comment_object, $comment_object_2 ) );
 
         $self =& $this;
@@ -545,7 +543,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $comment_model->_database->expects($this->once())->method('result')->will($this->returnValue(array( $comment_object, $comment_object_2 )));
 
         $this->model->load->expects($this->once())->method('model')->with('comment_model', 'comments_model')
-                          ->will($this->returnCallback(function() use ($self, $comment_model){
+                          ->will($this->returnCallback(function () use ($self, $comment_model) {
                               $self->model->comments_model = $comment_model;
                           }));
 
@@ -562,9 +560,9 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $this->model->author_model->shouldReceive('get')
                                   ->andReturn($author);
 
-        $obj = $this->model->with('author')->relate((object)$data);
+        $obj = $this->model->with('author')->relate((object) $data);
         $arr = $this->model->with('author')->relate($data);
-        
+
         $this->assertInternalType('object', $obj);
         $this->assertInternalType('array', $arr);
         $this->assertTrue(isset($obj->author));
@@ -575,7 +573,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
     /* --------------------------------------------------------------
      * VALIDATION
-     * ------------------------------------------------------------ */    
+     * ------------------------------------------------------------ */
 
     public function test_validate_correctly_returns_the_data_on_success_and_FALSE_on_failure()
     {
@@ -584,8 +582,8 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($this->model->validate($data), $data);
 
-        $this->model = $this->_validatable_model(FALSE);
-        $this->assertEquals($this->model->validate($data), FALSE);
+        $this->model = $this->_validatable_model(false);
+        $this->assertEquals($this->model->validate($data), false);
     }
 
     public function test_skip_validation()
@@ -593,10 +591,10 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $ret = $this->model->skip_validation();
 
         $this->assertEquals($ret, $this->model);
-        $this->assertEquals($this->model->get_skip_validation(), TRUE);
+        $this->assertEquals($this->model->get_skip_validation(), true);
     }
 
-    protected function _validatable_model($validate_pass_or_fail = TRUE)
+    protected function _validatable_model($validate_pass_or_fail = true)
     {
         $model = new Validated_model();
         $model->form_validation = m::mock('form_validation_class');
@@ -609,7 +607,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
     /* --------------------------------------------------------------
      * SOFT DELETE
-     * ------------------------------------------------------------ */    
+     * ------------------------------------------------------------ */
 
     public function test_soft_delete()
     {
@@ -623,9 +621,9 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $this->model->_database->expects($this->once())
                         ->method('update')
                         ->with($this->equalTo('records'), $this->equalTo(array( 'deleted' => TRUE )))
-                        ->will($this->returnValue(TRUE));
+                        ->will($this->returnValue(true));
 
-        $this->assertEquals($this->model->delete(2), TRUE);
+        $this->assertEquals($this->model->delete(2), true);
     }
 
     public function test_soft_delete_custom_key()
@@ -640,9 +638,9 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $this->model->_database->expects($this->once())
                         ->method('update')
                         ->with($this->equalTo('records'), $this->equalTo(array( 'record_deleted' => TRUE )))
-                        ->will($this->returnValue(TRUE));
+                        ->will($this->returnValue(true));
 
-        $this->assertEquals($this->model->delete(2), TRUE);
+        $this->assertEquals($this->model->delete(2), true);
     }
 
     public function test_soft_delete_by()
@@ -657,9 +655,9 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $this->model->_database->expects($this->once())
                         ->method('update')
                         ->with($this->equalTo('records'), $this->equalTo(array( 'deleted' => TRUE )))
-                        ->will($this->returnValue(TRUE));
+                        ->will($this->returnValue(true));
 
-        $this->assertEquals($this->model->delete_by('key', 'value'), TRUE);
+        $this->assertEquals($this->model->delete_by('key', 'value'), true);
     }
 
     public function test_soft_delete_many()
@@ -674,9 +672,9 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $this->model->_database->expects($this->once())
                         ->method('update')
                         ->with($this->equalTo('records'), $this->equalTo(array( 'deleted' => TRUE )))
-                        ->will($this->returnValue(TRUE));
+                        ->will($this->returnValue(true));
 
-        $this->assertEquals($this->model->delete_many(array(2, 4, 6)), TRUE);
+        $this->assertEquals($this->model->delete_many(array(2, 4, 6)), true);
     }
 
     public function test_soft_delete_get()
@@ -686,7 +684,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
         $this->model->_database->expects($this->at(0))
                         ->method('where')
-                        ->with($this->equalTo('deleted'), $this->equalTo(FALSE))
+                        ->with($this->equalTo('deleted'), $this->equalTo(false))
                         ->will($this->returnValue($this->model->_database));
         $this->model->_database->expects($this->at(1))
                         ->method('where')
@@ -707,13 +705,13 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
         $fake_row_1 = array( 'id' => 1, 'name' => 'Jamie' );
         $fake_row_2 = array( 'id' => 2, 'name' => 'Laura' );
-        $fake_results = array( (object)$fake_row_1, (object)$fake_row_2 );
+        $fake_results = array( (object) $fake_row_1, (object) $fake_row_2 );
 
         $this->model->_database->expects($this->at(0))
                         ->method('where')
-                        ->with($this->equalTo('deleted'), $this->equalTo(FALSE))
+                        ->with($this->equalTo('deleted'), $this->equalTo(false))
                         ->will($this->returnValue($this->model->_database));
-        
+
         $this->model->_database->expects($this->once())
                         ->method('select')
                         ->with($this->equalTo(array('id', 'name')))
@@ -722,7 +720,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $this->model->_database->expects($this->any())
                         ->method('result')
                         ->will($this->returnValue($fake_results));
-        
+
         $this->model->dropdown('name');
     }
 
@@ -750,13 +748,13 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
         $this->model->_database->expects($this->once())
                         ->method('where')
-                        ->with($this->equalTo('deleted'), $this->equalTo(TRUE))
+                        ->with($this->equalTo('deleted'), $this->equalTo(true))
                         ->will($this->returnValue($this->model->_database));
         $this->_expect_get();
         $this->model->_database->expects($this->once())
                         ->method('result')
                         ->will($this->returnValue(array('fake_record_here')));
-        
+
         $this->assertEquals($this->model->only_deleted()->get_all(), array('fake_record_here'));
     }
 
@@ -783,8 +781,8 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
         $this->model = new Record_model();
 
         $data = array( 'name' => 'Jamie' );
-        $obj = (object)array( 'name' => 'Jamie' );
-        
+        $obj = (object) array( 'name' => 'Jamie' );
+
         $data = $this->model->created_at($data);
         $obj = $this->model->created_at($obj);
         $data = $this->model->updated_at($data);
@@ -802,14 +800,14 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
     /* --------------------------------------------------------------
      * UTILITY METHODS
-     * ------------------------------------------------------------ */ 
+     * ------------------------------------------------------------ */
 
     public function test_dropdown()
     {
         $fake_row_1 = array( 'id' => 1, 'name' => 'Jamie' );
         $fake_row_2 = array( 'id' => 2, 'name' => 'Laura' );
 
-        $fake_results = array( (object)$fake_row_1, (object)$fake_row_2 );
+        $fake_results = array( (object) $fake_row_1, (object) $fake_row_2 );
 
         $this->model->_database->expects($this->once())
                         ->method('select')
@@ -865,7 +863,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
                         ->will($this->returnValue($this->model->_database));
         $this->model->_database->expects($this->once())
                         ->method('row')
-                        ->will($this->returnValue((object)array( 'AUTO_INCREMENT' => 250 )));
+                        ->will($this->returnValue((object) array( 'AUTO_INCREMENT' => 250 )));
 
         $this->assertEquals($this->model->get_next_id(), 250);
     }
@@ -886,7 +884,7 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
     /* --------------------------------------------------------------
      * QUERY BUILDER DIRECT ACCESS METHODS
-     * ------------------------------------------------------------ */ 
+     * ------------------------------------------------------------ */
 
     public function test_order_by_regular()
     {
@@ -942,15 +940,11 @@ class MY_Model_tests extends PHPUnit_Framework_TestCase
 
     public function assertCallbackIsCalled($method, $params = null)
     {
-        try
-        {
+        try {
             $method();
             $this->fail('Callback wasn\'t called');
-        }
-        catch (Callback_Test_Exception $e)
-        {
-            if (!is_null($params))
-            {
+        } catch (Callback_Test_Exception $e) {
+            if (!is_null($params)) {
                 $this->assertEquals($e->passed_object, $params);
             }
         }
