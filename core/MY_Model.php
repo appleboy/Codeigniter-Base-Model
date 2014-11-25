@@ -738,14 +738,26 @@ class MY_Model extends CI_Model
      * ------------------------------------------------------------ */
 
     /**
+     * Get a fresh timestamp for the model.
+     *
+     * @return date
+     */
+    public function freshTimestamp()
+    {
+        return date('Y-m-d H:i:s');
+    }
+
+    /**
      * MySQL DATETIME created_at and updated_at
      */
     public function created_at($row)
     {
+        $time = $this->freshTimestamp();
+
         if (is_object($row)) {
-            $row->{static::CREATED_AT} = date('Y-m-d H:i:s');
+            $row->{static::CREATED_AT} = $time;
         } else {
-            $row[static::CREATED_AT] = date('Y-m-d H:i:s');
+            $row[static::CREATED_AT] = $time;
         }
 
         return $row;
@@ -753,10 +765,12 @@ class MY_Model extends CI_Model
 
     public function updated_at($row)
     {
+        $time = $this->freshTimestamp();
+
         if (is_object($row)) {
-            $row->{static::UPDATED_AT} = date('Y-m-d H:i:s');
+            $row->{static::UPDATED_AT} = $time;
         } else {
-            $row[static::UPDATED_AT] = date('Y-m-d H:i:s');
+            $row[static::UPDATED_AT] = $time;
         }
 
         return $row;
