@@ -396,6 +396,11 @@ class MY_Model extends CI_Model
      */
     public function update_many($primary_values, $data, $skip_validation = false)
     {
+        if ($this->timestamps) {
+            $this->before_update = array_unique(array_merge($this->before_update,
+                                    array('updated_at')));
+        }
+
         $data = $this->trigger('before_update', $data);
 
         if ($skip_validation === FALSE) {
