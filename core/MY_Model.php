@@ -280,13 +280,15 @@ class MY_Model extends CI_Model
 
         if ($data !== FALSE) {
 
+            // table field filter
+            $data = $this->fillableFromArray($data);
+
             if ($this->timestamps) {
                 $this->before_create = array_unique(array_merge($this->before_create,
                                         array('created_at', 'updated_at')));
             }
 
             $data = $this->trigger('before_create', $data);
-            $data = $this->fillableFromArray($data);
 
             $this->_database->insert($this->_table, $data);
             $insert_id = $this->_database->insert_id();
@@ -370,13 +372,15 @@ class MY_Model extends CI_Model
 
         if ($data !== FALSE) {
 
+            // table field filter
+            $data = $this->fillableFromArray($data);
+
             if ($this->timestamps) {
                 $this->before_update = array_unique(array_merge($this->before_update,
                                         array('updated_at')));
             }
 
             $data = $this->trigger('before_update', $data);
-            $data = $this->fillableFromArray($data);
 
             $result = $this->_database->where($this->primary_key, $primary_value)
                                ->set($data)
@@ -395,6 +399,9 @@ class MY_Model extends CI_Model
      */
     public function update_many($primary_values, $data, $skip_validation = false)
     {
+        // table field filter
+        $data = $this->fillableFromArray($data);
+
         if ($this->timestamps) {
             $this->before_update = array_unique(array_merge($this->before_update,
                                     array('updated_at')));
@@ -427,6 +434,9 @@ class MY_Model extends CI_Model
         $args = func_get_args();
         $data = array_pop($args);
 
+        // table field filter
+        $data = $this->fillableFromArray($data);
+
         if ($this->timestamps) {
             $this->before_update = array_unique(array_merge($this->before_update,
                                     array('updated_at')));
@@ -451,12 +461,16 @@ class MY_Model extends CI_Model
      */
     public function update_all($data)
     {
+        // table field filter
+        $data = $this->fillableFromArray($data);
+
         if ($this->timestamps) {
             $this->before_update = array_unique(array_merge($this->before_update,
                                     array('updated_at')));
         }
 
         $data = $this->trigger('before_update', $data);
+
         $result = $this->_database->set($data)
                            ->update($this->_table);
         $this->trigger('after_update', array($data, $result));
