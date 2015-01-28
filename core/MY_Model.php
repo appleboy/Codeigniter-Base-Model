@@ -850,7 +850,7 @@ class MY_Model extends CI_Model
     /**
      * A wrapper to $this->_database->order_by()
      */
-    public function orderBy($criteria, $order = 'ASC')
+    public function order_by($criteria, $order = 'ASC')
     {
         if (is_array($criteria)) {
             foreach ($criteria as $key => $value) {
@@ -866,7 +866,7 @@ class MY_Model extends CI_Model
     /**
      * A wrapper to $this->_database->limit()
      */
-    public function limitTo($limit = null, $offset = 0)
+    public function limit($limit = null, $offset = 0)
     {
         $limit = (int) $limit;
         if ($limit) {
