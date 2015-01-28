@@ -362,7 +362,7 @@ class MY_Model extends CI_Model
     /**
      * Updated a record based on the primary value.
      */
-    public function save($primary_value, $data, $skip_validation = false)
+    public function update($primary_value, $data, $skip_validation = false)
     {
         if ($skip_validation === FALSE) {
             $data = $this->validate($data);
